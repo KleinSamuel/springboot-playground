@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ParentRepository extends MongoRepository<Parent, String> {
+public interface SequenceRepository extends MongoRepository<Sequence, String> {
 
 }
