@@ -1,42 +1,40 @@
 package com.github.kleinsamuel.springbootplayground;
 
-import com.github.kleinsamuel.springbootplayground.vet.Vet;
-import com.github.kleinsamuel.springbootplayground.vet.VetRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.kleinsamuel.springbootplayground.repo.Parent;
+import com.github.kleinsamuel.springbootplayground.repo.ParentRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.Set;
-import java.util.UUID;
-
 @SpringBootApplication
 public class Application implements CommandLineRunner {
 
-	private final VetRepository vetRepository;
+	private final ParentRepository parentRepository;
 
-	public Application(VetRepository vetRepository) {
-		this.vetRepository = vetRepository;
+	public Application(ParentRepository parentRepository) {
+		this.parentRepository = parentRepository;
 	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
+	public void insertDocument() {
+
+		System.out.println("inserting document");
+
+		Parent p = new Parent("abc");
+		this.parentRepository.save(p);
+
+		System.out.println("inserted document");
+
+		this.parentRepository.findAll().forEach(System.out::println);
+	}
+
 	@Override
 	public void run(String... args) throws Exception {
 
-		vetRepository.deleteAll();
-
-		Vet john = new Vet(UUID.randomUUID(), "John", "Doe", Set.of("Dentist", "Surgeon"));
-		Vet jane = new Vet(UUID.randomUUID(), "Jane", "Doe", Set.of("Radiology", "Surgeon"));
-
-		Vet savedJohn = vetRepository.save(john);
-		Vet savedJane = vetRepository.save(jane);
-
-		vetRepository.findAll().forEach(v -> System.out.println(v.getFirstName()));
-
-		vetRepository.findById(savedJohn.getId()).ifPresent(v -> System.out.println(v.getFirstName()));
+		this.insertDocument();
 
 	}
 }
